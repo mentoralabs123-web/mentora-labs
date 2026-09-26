@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mentora Labs — Orders</title>
+<style>
+  body { font-family: system-ui, sans-serif; background: #05070d; color: #f2f4fb; margin: 0; padding: 24px; }
+  h1 { font-size: 1.3rem; margin-bottom: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #223050; vertical-align: top; }
+  th { color: #8a93ac; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.03em; }
+  tr:hover { background: #0d1324; }
+  .empty { color: #8a93ac; padding: 30px 0; text-align: center; }
+</style>
+</head>
+<body>
+  <h1>Mentora Labs — Order Requests</h1>
+  {% if orders %}
+  <table>
+    <thead>
+      <tr><th>#</th><th>Name</th><th>Contact</th><th>Track</th><th>Message</th><th>Received</th></tr>
+    </thead>
+    <tbody>
+      {% for o in orders %}
+      <tr>
+        <td>{{ o["id"] }}</td>
+        <td>{{ o["name"] }}</td>
+        <td>{{ o["contact"] }}</td>
+        <td>{{ o["track"] }}</td>
+        <td>{{ o["message"] or "—" }}</td>
+        <td>{{ o["created_at"] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="empty">No orders yet.</p>
+  {% endif %}
+</body>
+</html>
