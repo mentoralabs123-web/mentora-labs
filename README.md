@@ -1,7 +1,8 @@
 # Mentora Labs
 
 Full-stack site: Flask backend + templated frontend, with an order form backed by
-a real API and a SQLite database — no more relying only on WhatsApp links.
+a real API and a database. It uses PostgreSQL when `DATABASE_URL` is set and
+SQLite for local development otherwise.
 
 ## What's included
 
@@ -38,19 +39,24 @@ Visit `http://localhost:5000`.
 6. Deploy. Render gives you a live `.onrender.com` URL.
 
 Render's Free web services block outbound SMTP ports, so email alerts will not
-work on the Free plan. The order form and admin page still run, but SQLite
-storage is temporary on Render Free.
+work on the Free plan. Set `DATABASE_URL` to a Neon PostgreSQL connection string
+to keep orders outside Render's temporary filesystem.
 
-## Important note on free hosting
+## Connect Neon PostgreSQL
 
-This uses **SQLite**, a single file (`mentora.db`) written to disk. Render Free
-web services spin down after 15 minutes without traffic and have an ephemeral
-filesystem, so orders can be lost on spin-down, restart, or deploy. Free Render
-Postgres expires after 30 days, so it is not durable free storage either.
+1. Create a project in Neon and copy its PostgreSQL connection string. Use the
+  pooled connection string and make sure it includes `sslmode=require`.
+2. In Render, open the `mentora-labs` service and go to **Environment**.
+3. Add `DATABASE_URL` with the connection string as its value. Treat it as a
+  password: do not put it in GitHub, source files, or chat.
+4. Save the change and redeploy. The app creates the `orders` table on startup.
+5. Submit a test order, then view it at `/admin/orders` using your admin login.
 
-Use the Free plan for a demo or testing, not as the only record of real order
-requests. Reliable order storage requires a persistent paid disk or a durable
-external database.
+The Render Blueprint declares `DATABASE_URL` as a secret prompt for initial
+setup. For an already-created Render service, add it manually in **Environment**.
+Without `DATABASE_URL`, the app falls back to SQLite, whose data is temporary on
+Render Free. Neon free-tier limits and availability are subject to Neon's terms;
+keep backups for important order records.
 
 ## Viewing submitted orders
 

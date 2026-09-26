@@ -6,10 +6,13 @@ from datetime import datetime, timezone
 from functools import wraps
 
 from flask import Flask, render_template, request, jsonify, g, Response
+import psycopg
+from psycopg.rows import dict_row
 
 app = Flask(__name__)
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "mentora.db")
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 ADMIN_USER = os.environ.get("ADMIN_USER", "admin")
 ADMIN_PASS = os.environ.get("ADMIN_PASS", "changeme")
@@ -27,9 +30,18 @@ NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL")  # where new-order alerts get sent
 
 def get_db():
     if "db" not in g:
-        g.db = sqlite3.connect(DB_PATH)
-        g.db.row_factory = sqlite3.Row
+        if DATABASE_URL:
+            g.db = psycopg.connect(DATABASE_URL, row_factory=dict_row)
+        else:
+            g.db = sqlite3.connect(DB_PATH)
+            g.db.row_factory = sqlite3.Row
     return g.db
+
+
+def execute_query(db, query, params=()):
+    if DATABASE_URL:
+        query = query.replace("?", "%s")
+    return db.execute(query, params)
 
 
 @app.teardown_appcontext
@@ -40,11 +52,16 @@ def close_db(exception=None):
 
 
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
+    if DATABASE_URL:
+        conn = psycopg.connect(DATABASE_URL, row_factory=dict_row)
+        id_column = "BIGSERIAL PRIMARY KEY"
+    else:
+        conn = sqlite3.connect(DB_PATH)
+        id_column = "INTEGER PRIMARY KEY AUTOINCREMENT"
     conn.execute(
-        """
+        f"""
         CREATE TABLE IF NOT EXISTS orders (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id {id_column},
             name TEXT NOT NULL,
             contact TEXT NOT NULL,
             track TEXT NOT NULL,
@@ -168,7 +185,8 @@ def create_order():
     created_at = datetime.now(timezone.utc).isoformat()
 
     db = get_db()
-    db.execute(
+    execute_query(
+        db,
         "INSERT INTO orders (name, contact, track, message, created_at) VALUES (?, ?, ?, ?, ?)",
         (name, contact, track, message, created_at),
     )
@@ -190,7 +208,7 @@ def create_order():
 @requires_auth
 def admin_orders():
     db = get_db()
-    rows = db.execute("SELECT * FROM orders ORDER BY id DESC").fetchall()
+    rows = execute_query(db, "SELECT * FROM orders ORDER BY id DESC").fetchall()
     return render_template("admin.html", orders=rows)
 
 
