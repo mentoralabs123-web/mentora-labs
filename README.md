@@ -35,24 +35,22 @@ Visit `http://localhost:5000`.
 5. Add environment variables (Render dashboard → Environment):
    - `ADMIN_USER` — username for viewing orders (e.g. `sumi`)
    - `ADMIN_PASS` — a real password (don't leave the default)
-   - Optional, only if you want email alerts on every new order:
-     - `SMTP_HOST`, `SMTP_PORT` (usually `587`), `SMTP_USER`, `SMTP_PASS`,
-       `NOTIFY_EMAIL` (where alerts get sent)
-     - For Gmail: use an **App Password**, not your normal Gmail password.
 6. Deploy. Render gives you a live `.onrender.com` URL.
 
-## Important note on the database
+Render's Free web services block outbound SMTP ports, so email alerts will not
+work on the Free plan. The order form and admin page still run, but SQLite
+storage is temporary on Render Free.
 
-This uses **SQLite**, a single file (`mentora.db`) written to disk. On Render's
-**free plan, the filesystem is not persistent** — it resets on every deploy or
-restart, which means stored orders can be lost. Two ways to handle this:
+## Important note on free hosting
 
-- **Fine for now**: rely on the optional email notifications (set the `SMTP_*`
-  vars above) so you get every order by email the moment it's submitted, even
-  if the database itself resets later.
-- **For real persistence**: attach a Render **paid disk** to this service, or
-  swap SQLite for Render's managed **Postgres** (a bigger change to `app.py`
-  — ask if you want this done).
+This uses **SQLite**, a single file (`mentora.db`) written to disk. Render Free
+web services spin down after 15 minutes without traffic and have an ephemeral
+filesystem, so orders can be lost on spin-down, restart, or deploy. Free Render
+Postgres expires after 30 days, so it is not durable free storage either.
+
+Use the Free plan for a demo or testing, not as the only record of real order
+requests. Reliable order storage requires a persistent paid disk or a durable
+external database.
 
 ## Viewing submitted orders
 
