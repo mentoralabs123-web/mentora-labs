@@ -151,6 +151,48 @@ TRACKS = [
         "desc": "A budgeting app with spend categories, monthly summaries, and charts.",
         "chips": ["Flask", "HTML/CSS", "SQL"],
     },
+    {
+        "key": "heart",
+        "tag": "Healthcare · ML",
+        "title": "Heart Disease Prediction",
+        "desc": "A machine learning model that predicts heart disease risk from patient health data.",
+        "chips": ["Python", "Machine Learning", "Healthcare"],
+    },
+    {
+        "key": "house",
+        "tag": "Regression · ML",
+        "title": "House Price Prediction",
+        "desc": "A regression model that estimates house prices from property features.",
+        "chips": ["Python", "Regression", "Pandas"],
+    },
+    {
+        "key": "flight",
+        "tag": "Regression · ML",
+        "title": "Flight Fare Prediction",
+        "desc": "A regression model that estimates flight ticket prices using route, date, and airline data.",
+        "chips": ["Python", "Regression", "Pandas"],
+    },
+    {
+        "key": "rice-leaf",
+        "tag": "Agriculture · CNN",
+        "title": "Rice Leaf Disease Prediction",
+        "desc": "A CNN image classifier that identifies diseases in rice leaf photos.",
+        "chips": ["Python", "CNN", "Computer Vision"],
+    },
+    {
+        "key": "task-manager",
+        "tag": "App",
+        "title": "Task Manager",
+        "desc": "An app for creating, assigning, and tracking tasks.",
+        "chips": ["Flask", "Task Tracking", "SQL"],
+    },
+    {
+        "key": "quiz",
+        "tag": "App",
+        "title": "Quiz App",
+        "desc": "An app for building and taking timed multiple-choice quizzes.",
+        "chips": ["Flask", "Quizzes", "JavaScript"],
+    },
 ]
 
 CONTACT = {

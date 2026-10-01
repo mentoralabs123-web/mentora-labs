@@ -188,7 +188,11 @@
         </div>
       </div>
     </div>
-    <div class="footer-bottom">© 2026 Mentora Labs. Built by students, for students.</div>
+    <div class="footer-bottom">
+      Project completion certificates are provided upon successful completion.<br>
+      Udyam-registered business | Registration No.: UDYAM-TN-19-0065658<br>
+      © 2026 Mentora Labs. Built by students, for students.
+    </div>
   </div>
 </footer>
 
@@ -205,9 +209,9 @@
       <input type="text" name="contact" required>
       <label>Track</label>
       <select name="track" id="trackSelect">
-        <option value="NIDS — Network Intrusion Detection">NIDS — Network Intrusion Detection</option>
-        <option value="Skin Disease Classification">Skin Disease Classification</option>
-        <option value="Expense Tracker">Expense Tracker</option>
+        {% for t in tracks %}
+        <option value="{{ t.title }}">{{ t.title }}</option>
+        {% endfor %}
         <option value="Other / not sure yet">Other / not sure yet</option>
       </select>
       <label>Message (optional)</label>
