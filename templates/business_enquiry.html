@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% from "partials/_macros.html" import icon %}
+{% block title %}Business Enquiry — Discuss Your Project | Mentora Labs{% endblock %}
+{% block description %}Tell Mentora Labs about the website, application or custom digital solution you need. Share your requirements and we will get back to you to discuss the next step.{% endblock %}
+
+{# ---------------------------------------------------------------------
+   Task 4B: business enquiry form. Posts to this same route (POST /services/enquiry),
+   which validates on the server and stores the enquiry in business_enquiries.
+   Works without JavaScript; static/js/enquiry.js only adds inline checks and the
+   "Sending…" state. Kept separate from the student enquiry dialog (/api/orders).
+   --------------------------------------------------------------------- #}
+{% macro field_error(name) -%}
+  {%- if errors.get(name) %}<p class="field__error" id="{{ name }}-error">{{ errors[name] }}</p>{% endif -%}
+{%- endmacro %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <h1>Discuss your project</h1>
+    <p class="lead">Tell us what you would like built. Share as much or as little as you know right now, and we will review it and come back to you to talk through the next step.</p>
+  </div>
+</section>
+
+<section class="section enq">
+  <div class="container enq__grid">
+    <div class="enq__main">
+      <form class="enq-form card" id="enquiryForm" method="post" action="{{ url_for('business_enquiry') }}" novalidate
+            data-min-description="10" data-max-description="{{ limits.description }}">
+        <h2 class="enq-form__title">Business enquiry</h2>
+        <p class="enq-form__note"><span class="req" aria-hidden="true">*</span> marks required fields. Everything else is optional.</p>
+
+        {% if errors or form_error %}
+        <div class="form-alert" id="formErrors" role="alert" tabindex="-1">
+          {% if form_error %}
+            <p><strong>{{ form_error }}</strong></p>
+          {% else %}
+            <p><strong>Please check the highlighted fields.</strong></p>
+          {% endif %}
+          {% if errors %}
+          <ul>
+            {% for key, msg in errors.items() %}
+            <li><a href="#{{ 'email' if key == 'contact' else key }}">{{ msg }}</a></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="submission_token" value="{{ values.submission_token }}">
+        <input type="hidden" name="source" value="{{ values.source }}">
+        <div class="hp" aria-hidden="true">
+          <label>Leave this field empty<input type="text" name="nickname_hp" tabindex="-1" autocomplete="off" value=""></label>
+        </div>
+
+        <div class="field{% if errors.name %} has-error{% endif %}">
+          <label for="name">Your name <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" id="name" name="name" value="{{ values.name }}" maxlength="{{ limits.name }}" autocomplete="name" required
+                 {% if errors.name %}aria-invalid="true" aria-describedby="name-error"{% endif %}>
+          {{ field_error('name') }}
+        </div>
+
+        <fieldset class="field-group{% if errors.contact or errors.email or errors.phone %} has-error{% endif %}">
+          <legend>How can we reach you? <span class="req" aria-hidden="true">*</span></legend>
+          <p class="field__hint" id="contact-hint">Give us an email address, a phone number, or both.</p>
+          {% if errors.contact %}<p class="field__error" id="contact-error">{{ errors.contact }}</p>{% endif %}
+          <div class="field-row">
+            <div class="field{% if errors.email %} has-error{% endif %}">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" value="{{ values.email }}" maxlength="{{ limits.email }}" autocomplete="email" inputmode="email"
+                     aria-describedby="contact-hint{% if errors.contact %} contact-error{% endif %}{% if errors.email %} email-error{% endif %}"
+                     {% if errors.email or errors.contact %}aria-invalid="true"{% endif %}>
+              {{ field_error('email') }}
+            </div>
+            <div class="field{% if errors.phone %} has-error{% endif %}">
+              <label for="phone">Phone number</label>
+              <input type="tel" id="phone" name="phone" value="{{ values.phone }}" maxlength="{{ limits.phone }}" autocomplete="tel" inputmode="tel"
+                     aria-describedby="contact-hint{% if errors.phone %} phone-error{% endif %}"
+                     {% if errors.phone or errors.contact %}aria-invalid="true"{% endif %}>
+              {{ field_error('phone') }}
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="field{% if errors.business_name %} has-error{% endif %}">
+          <label for="business_name">Business or organization <span class="opt">(optional)</span></label>
+          <input type="text" id="business_name" name="business_name" value="{{ values.business_name }}" maxlength="{{ limits.business }}" autocomplete="organization"
+                 {% if errors.business_name %}aria-invalid="true" aria-describedby="business_name-error"{% endif %}>
+          {{ field_error('business_name') }}
+        </div>
+
+        <div class="field{% if errors.service %} has-error{% endif %}">
+          <label for="service">Service required <span class="req" aria-hidden="true">*</span></label>
+          <select id="service" name="service" required {% if errors.service %}aria-invalid="true" aria-describedby="service-error"{% endif %}>
+            <option value=""{% if not values.service %} selected{% endif %} disabled>Select a service</option>
+            {% for code, label in services %}
+            <option value="{{ code }}"{% if values.service == code %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          {{ field_error('service') }}
+        </div>
+
+        <div class="field{% if errors.project_description %} has-error{% endif %}">
+          <label for="project_description">Project description <span class="req" aria-hidden="true">*</span></label>
+          <p class="field__hint" id="description-hint">You could include what the project is for, who will use it, the main pages or features you need, any existing website or designs, and a date you are working towards.</p>
+          <textarea id="project_description" name="project_description" rows="6" maxlength="{{ limits.description }}" required
+                    placeholder="For example: We run a small clinic and need a website where patients can see our services and send an appointment request…"
+                    aria-describedby="description-hint{% if errors.project_description %} project_description-error{% endif %}"
+                    {% if errors.project_description %}aria-invalid="true"{% endif %}>{{ values.project_description }}</textarea>
+          <div class="field__foot">
+            {{ field_error('project_description') }}
+            <span class="field__count" id="descCount" aria-live="off">{{ values.project_description|length }} / {{ limits.description }}</span>
+          </div>
+        </div>
+
+        <div class="field{% if errors.budget %} has-error{% endif %}">
+          <label for="budget">Budget <span class="opt">(optional)</span></label>
+          <select id="budget" name="budget" {% if errors.budget %}aria-invalid="true" aria-describedby="budget-error"{% endif %}>
+            <option value=""{% if not values.budget %} selected{% endif %}>Skip this question</option>
+            {% for code, label in budgets %}
+            <option value="{{ code }}"{% if values.budget == code %} selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+          <p class="field__hint">Amounts are in Indian rupees. You do not have to share a budget to send an enquiry.</p>
+          {{ field_error('budget') }}
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block enq-form__submit" id="enquirySubmit">Send enquiry</button>
+        <p class="form-status" id="enquiryStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+
+    <aside class="enq__aside" aria-label="What happens next">
+      <div class="card enq-aside">
+        <h2>What happens next</h2>
+        <ol class="enq-steps">
+          <li><span class="enq-steps__n" aria-hidden="true">1</span><span>You send us your requirements.</span></li>
+          <li><span class="enq-steps__n" aria-hidden="true">2</span><span>We review them and get in touch using the details you gave.</span></li>
+          <li><span class="enq-steps__n" aria-hidden="true">3</span><span>We talk through scope and the right approach with you before any work begins.</span></li>
+        </ol>
+      </div>
+      <div class="card enq-aside">
+        <h2>Prefer to talk directly?</h2>
+        <p>You can also reach us without the form.</p>
+        <ul class="enq-direct">
+          <li><a href="https://wa.me/{{ contact.whatsapp_number }}?text=Hi%20Mentora%20Labs%2C%20I%27d%20like%20to%20discuss%20an%20IT%20services%20requirement." target="_blank" rel="noopener">Chat on WhatsApp<span class="sr-only"> (opens in a new tab)</span></a></li>
+          <li><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></li>
+          <li><a href="{{ url_for('contact_page') }}">More contact options</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/enquiry.js') }}" defer></script>{% endblock %}

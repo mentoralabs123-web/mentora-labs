@@ -1,0 +1,44 @@
+{# Category artwork used when a project has no image. One abstract diagram per
+   visual family (ml, dl, data, web); colours come from CSS classes in style.css. #}
+{% macro project_art(kind) -%}
+<svg class="part part--{{ kind }}" viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  {% if kind == 'dl' %}
+  {# layered neural network #}
+  <g class="part__line">
+    {% for y1 in (40, 80, 120, 160) %}{% for y2 in (30, 70, 110, 150) %}<line x1="70" y1="{{ y1 }}" x2="160" y2="{{ y2 }}"/>{% endfor %}{% endfor %}
+    {% for y1 in (30, 70, 110, 150) %}{% for y2 in (60, 120) %}<line x1="160" y1="{{ y1 }}" x2="250" y2="{{ y2 }}"/>{% endfor %}{% endfor %}
+  </g>
+  {% for y in (40, 80, 120, 160) %}<circle class="part__node part__node--a" cx="70" cy="{{ y }}" r="7"/>{% endfor %}
+  {% for y in (30, 70, 110, 150) %}<circle class="part__node part__node--b" cx="160" cy="{{ y }}" r="7"/>{% endfor %}
+  {% for y in (60, 120) %}<circle class="part__node part__node--c" cx="250" cy="{{ y }}" r="8"/>{% endfor %}
+  {% elif kind == 'ml' %}
+  {# two clusters separated by a decision boundary #}
+  <line class="part__axis" x1="30" y1="150" x2="290" y2="150"/>
+  <line class="part__axis" x1="30" y1="25" x2="30" y2="150"/>
+  <path class="part__boundary" d="M60 140 C 120 120, 170 70, 270 40"/>
+  {% for p in ((70,118),(92,98),(110,126),(130,102),(84,80),(150,120),(118,78),(176,104)) %}<circle class="part__node part__node--a" cx="{{ p[0] }}" cy="{{ p[1] }}" r="6"/>{% endfor %}
+  {% for p in ((150,50),(190,36),(222,62),(246,28),(206,84),(262,76),(172,64),(236,100)) %}<circle class="part__node part__node--c" cx="{{ p[0] }}" cy="{{ p[1] }}" r="6"/>{% endfor %}
+  {% elif kind == 'data' %}
+  {# bar chart with trend line #}
+  <line class="part__axis" x1="30" y1="150" x2="292" y2="150"/>
+  <line class="part__axis part__axis--faint" x1="30" y1="110" x2="292" y2="110"/>
+  <line class="part__axis part__axis--faint" x1="30" y1="70" x2="292" y2="70"/>
+  {% for b in ((42, 60), (80, 85), (118, 70), (156, 105), (194, 92), (232, 120)) %}
+  <rect class="part__bar" x="{{ b[0] }}" y="{{ 150 - b[1] }}" width="26" height="{{ b[1] }}" rx="2"/>
+  {% endfor %}
+  <polyline class="part__trend" points="55,82 93,60 131,74 169,42 207,54 245,26"/>
+  {% for p in ((55,82),(93,60),(131,74),(169,42),(207,54),(245,26)) %}<circle class="part__node part__node--c" cx="{{ p[0] }}" cy="{{ p[1] }}" r="4.5"/>{% endfor %}
+  {% else %}
+  {# browser window with app layout #}
+  <rect class="part__win" x="36" y="22" width="248" height="140" rx="8"/>
+  <line class="part__axis" x1="36" y1="46" x2="284" y2="46"/>
+  <circle class="part__node part__node--a" cx="52" cy="34" r="4"/>
+  <circle class="part__node part__node--b" cx="66" cy="34" r="4"/>
+  <circle class="part__node part__node--c" cx="80" cy="34" r="4"/>
+  <rect class="part__block part__block--solid" x="50" y="60" width="62" height="88" rx="4"/>
+  <rect class="part__block" x="124" y="60" width="148" height="22" rx="4"/>
+  <rect class="part__block" x="124" y="92" width="70" height="56" rx="4"/>
+  <rect class="part__block" x="202" y="92" width="70" height="56" rx="4"/>
+  {% endif %}
+</svg>
+{%- endmacro %}

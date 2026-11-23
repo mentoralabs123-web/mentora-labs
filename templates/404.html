@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Page not found — Mentora Labs{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <h1>Page not found</h1>
+    <p class="lead">That page doesn't exist or has moved. Try one of the links in the menu, or head back home.</p>
+    <div class="actions mt-5"><a class="btn btn-primary" href="{{ url_for('index') }}">Back to home</a></div>
+  </div>
+</section>
+{% endblock %}

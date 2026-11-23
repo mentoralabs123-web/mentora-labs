@@ -1,0 +1,19 @@
+{# Reusable Jinja macros: icons and project cards #}
+{% macro icon(name) -%}
+<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-{{ name }}"/></svg>
+{%- endmacro %}
+
+{% macro project_card(t) -%}
+<article class="project-card" data-group="{{ t.group }}">
+  <div class="project-card__meta">
+    <span class="tag">{{ t.tag.split(' · ') | join(', ') }}</span>
+    <span class="status">Available now</span>
+  </div>
+  <h3>{{ t.title }}</h3>
+  <p>{{ t.desc }}</p>
+  <ul class="chips" aria-label="Technologies">
+    {% for c in t.chips %}<li class="chip">{{ c }}</li>{% endfor %}
+  </ul>
+  <button type="button" class="btn btn-secondary btn-block" data-open-order="{{ t.title }}">Ask about this project</button>
+</article>
+{%- endmacro %}

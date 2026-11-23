@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% from "partials/_macros.html" import icon %}
+{% block title %}Contact — Mentora Labs{% endblock %}
+{% block description %}Contact Mentora Labs by phone, email, WhatsApp or the enquiry form.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <h1>Contact Mentora Labs</h1>
+    <p class="lead">Questions about a project, a learning path or an IT service? Reach us any of these ways.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="sr-only">Ways to reach us</h2>
+    <div class="grid grid--2">
+      <div class="card contact-card">
+        <span class="icon-badge">{{ icon('phone') }}</span>
+        <h3>Phone</h3>
+        {% for p in contact.phones %}<div class="value"><a href="tel:{{ p | replace(' ', '') }}">{{ p }}</a></div>{% endfor %}
+      </div>
+      <div class="card contact-card">
+        <span class="icon-badge">{{ icon('mail') }}</span>
+        <h3>Email</h3>
+        <div class="value"><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></div>
+      </div>
+    </div>
+    <div class="actions mt-5">
+      <a class="btn btn-primary" href="https://wa.me/{{ contact.whatsapp_number }}?text=Hi%20Mentora%20Labs%2C%20I%20would%20like%20to%20know%20more%20about%20your%20learning%20tracks." target="_blank" rel="noopener">WhatsApp (+91 74491 52395)</a>
+      <a class="btn btn-secondary" href="https://wa.me/{{ contact.additional_whatsapp_number }}?text=Hi%20Mentora%20Labs%2C%20I%20would%20like%20to%20make%20an%20enquiry." target="_blank" rel="noopener">WhatsApp (+91 88258 28406)</a>
+      <a class="btn btn-secondary" href="mailto:{{ contact.email }}">Email us</a>
+      <button type="button" class="btn btn-secondary" data-open-order="">Send an enquiry</button>
+      <a class="btn btn-secondary" href="{{ url_for('business_enquiry') }}">Business enquiry</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section--soft">
+  <div class="container">
+    <div class="section-head"><h2>Follow Mentora Labs</h2></div>
+    <div class="social-grid">
+      <a class="social-link" href="{{ contact.instagram }}" target="_blank" rel="noopener">Instagram</a>
+      <a class="social-link" href="{{ contact.facebook }}" target="_blank" rel="noopener">Facebook</a>
+      <a class="social-link" href="{{ contact.whatsapp_channel }}" target="_blank" rel="noopener">WhatsApp channel</a>
+      <a class="social-link" href="{{ contact.telegram }}" target="_blank" rel="noopener">Telegram</a>
+      <a class="social-link" href="{{ contact.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

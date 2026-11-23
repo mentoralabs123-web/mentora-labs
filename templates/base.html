@@ -1,0 +1,92 @@
+{% from "partials/_macros.html" import icon %}
+{% set nav_items = [
+  ('index', 'Home', 'home'),
+  ('about', 'About', 'users'),
+  ('services', 'IT Services', 'briefcase'),
+  ('projects', 'Projects', 'layers'),
+  ('learning', 'Learning', 'book'),
+  ('contact_page', 'Contact', 'mail'),
+  ('faq', 'FAQ', 'help-circle'),
+  ('reviews', 'Reviews', 'star'),
+] -%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}Mentora Labs — Where Learning Meets Technology{% endblock %}</title>
+<meta name="description" content="{% block description %}Mentora Labs: project-based mentoring in machine learning, data science and full-stack development, plus IT services for businesses.{% endblock %}">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script>
+/* Apply saved sidebar state before first paint to avoid a layout jump */
+(function(){try{var w=window.innerWidth;if(w>=768&&(w<1100||localStorage.getItem('ml-sidebar')==='collapsed'))document.documentElement.classList.add('sb-collapsed');}catch(e){}})();
+</script>
+</head>
+<body>
+{% include "partials/_icons.html" %}
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar" aria-label="Site">
+    <div class="sidebar__head">
+      <a class="brand" href="{{ url_for('index') }}" aria-label="Mentora Labs — home">
+        <img src="{{ url_for('static', filename='img/logo-96.png') }}" width="40" height="40" alt="">
+        <span class="brand__text sb-label">
+          <span class="brand__name">Mentora Labs</span>
+          <span class="brand__tag">Build. Learn. Grow.</span>
+        </span>
+      </a>
+      <button type="button" class="icon-btn sidebar__close" id="navClose" aria-label="Close menu">{{ icon('x') }}</button>
+    </div>
+
+    <nav class="sidebar__nav" aria-label="Primary">
+      <ul>
+        {% for endpoint, label, ico in nav_items %}
+        <li>
+          <a class="nav-link" href="{{ url_for(endpoint) }}"{% if request.endpoint == endpoint or (endpoint == 'services' and request.endpoint in ('business_enquiry', 'business_enquiry_submitted')) %} aria-current="page"{% endif %}>
+            {{ icon(ico) }}<span class="sb-label">{{ label }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="sidebar__foot">
+      <button type="button" class="btn btn-primary btn-block" data-open-order="" aria-label="Enquire now">
+        {{ icon('chat') }}<span class="sb-label">Enquire now</span>
+      </button>
+      <button type="button" class="sidebar__toggle" id="sidebarToggle" aria-controls="sidebar" aria-expanded="true" aria-label="Collapse sidebar">
+        {{ icon('chevrons-left') }}<span class="sb-label">Collapse</span>
+      </button>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <div class="page" id="page">
+    <header class="topbar">
+      <button type="button" class="icon-btn" id="menuButton" aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">{{ icon('menu') }}</button>
+      <a class="brand" href="{{ url_for('index') }}" aria-label="Mentora Labs — home">
+        <img src="{{ url_for('static', filename='img/logo-96.png') }}" width="32" height="32" alt="">
+        <span class="brand__name">Mentora Labs</span>
+      </a>
+      <button type="button" class="btn btn-primary btn-sm" data-open-order="">Enquire</button>
+    </header>
+
+    <main id="main" tabindex="-1">
+      {% block content %}{% endblock %}
+    </main>
+
+    {% include "partials/_footer.html" %}
+  </div>
+</div>
+
+{% include "partials/_order_dialog.html" %}
+<script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

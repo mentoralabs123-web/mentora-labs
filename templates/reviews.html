@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from "partials/_macros.html" import icon %}
+{% block title %}Reviews — Mentora Labs{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <h1>Reviews</h1>
+    <p class="lead">Tell us how we did.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="sr-only">Share your feedback</h2>
+    <div class="card notice">
+      <span class="icon-badge">{{ icon('star') }}</span>
+      <div class="stack">
+        <h3>Leave a review</h3>
+        <p class="prose">If Mentora Labs helped you build something you're proud of, a quick review helps other students find us too.</p>
+        <a class="btn btn-primary" href="{{ contact.google_review }}" target="_blank" rel="noopener">Leave us a review</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

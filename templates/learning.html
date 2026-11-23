@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% from "partials/_macros.html" import icon %}
+{% block title %}Learning — Mentora Labs{% endblock %}
+{% block description %}Learn machine learning, data science and full-stack development by building real projects with mentor guidance at Mentora Labs.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <h1>Learning with Mentora Labs</h1>
+    <p class="lead">Guided mentorship, not just tutorials. Build something real and understand every part of it.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head"><h2>Choose a learning path</h2></div>
+    {% for g in groups %}
+    {% set items = tracks | selectattr('group', 'equalto', g.key) | list %}
+    <div class="path-row">
+      <div class="path-row__head">
+        <span class="icon-badge">{{ icon(g.icon) }}</span>
+        <h3>{{ g.title }}</h3>
+        <p>{{ g.desc }}</p>
+        <a class="link-arrow" href="{{ url_for('projects', path=g.key) }}">View {{ items | length }} projects {{ icon('arrow-right') }}</a>
+      </div>
+      <ul class="stack" aria-label="Projects in {{ g.title }}">
+        {% for t in items %}
+        <li><strong>{{ t.title }}</strong><br><span class="prose">{{ t.desc }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section section--soft">
+  <div class="container">
+    <div class="section-head"><h2>How it works</h2></div>
+    {% include "partials/_steps.html" %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid--2">
+      <div class="stack">
+        <h2>Want to know pricing?</h2>
+        <p class="prose">Pricing depends on the track and how much guidance you want. Message us and we'll walk you through it.</p>
+      </div>
+      <div class="actions self-center">
+        <a class="btn btn-primary" href="https://wa.me/{{ contact.whatsapp_number }}?text=Hi%20Mentora%20Labs%2C%20can%20you%20share%20pricing%20details%3F" target="_blank" rel="noopener">Ask about pricing on WhatsApp</a>
+        <button type="button" class="btn btn-secondary" data-open-order="">Send an enquiry</button>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

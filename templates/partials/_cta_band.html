@@ -1,0 +1,11 @@
+{# Expects: cta_title, cta_text, cta_wa (url-encoded WhatsApp message), cta_order (enquiry preselect) #}
+<div class="cta-band">
+  <div>
+    <h2>{{ cta_title }}</h2>
+    <p>{{ cta_text }}</p>
+  </div>
+  <div class="actions">
+    <a class="btn btn-primary" href="https://wa.me/{{ contact.whatsapp_number }}?text={{ cta_wa }}" target="_blank" rel="noopener">Chat on WhatsApp</a>
+    <button type="button" class="btn btn-secondary" data-open-order="{{ cta_order }}">Send an enquiry</button>
+  </div>
+</div>

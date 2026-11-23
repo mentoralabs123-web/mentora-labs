@@ -1,0 +1,34 @@
+{% from "partials/_macros.html" import icon %}
+<dialog class="dialog" id="orderDialog" aria-labelledby="orderTitle">
+  <div class="dialog__body">
+    <div class="dialog__head">
+      <h2 id="orderTitle">Send an enquiry</h2>
+      <button type="button" class="icon-btn" data-close-order aria-label="Close enquiry form">{{ icon('x') }}</button>
+    </div>
+    <p class="dialog__sub">Fill this in and we'll get back to you, or use WhatsApp or email for a faster reply.</p>
+    <p class="dialog__alt">Need a website, app or custom software for your business? <a href="{{ url_for('business_enquiry') }}">Send a business enquiry</a> instead.</p>
+    <form id="orderForm">
+      <div class="field">
+        <label for="orderName">Name</label>
+        <input type="text" id="orderName" name="name" required maxlength="100" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="orderContact">Phone or email</label>
+        <input type="text" id="orderContact" name="contact" required maxlength="150" autocomplete="email">
+      </div>
+      <div class="field">
+        <label for="trackSelect">Project or service</label>
+        <select name="track" id="trackSelect">
+          {% for t in tracks %}<option value="{{ t.title }}">{{ t.title }}</option>{% endfor %}
+          <option value="Other / not sure yet" selected>Other / not sure yet</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="orderMessage">Message (optional)</label>
+        <textarea id="orderMessage" name="message" rows="3" maxlength="1000"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Send enquiry</button>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</dialog>

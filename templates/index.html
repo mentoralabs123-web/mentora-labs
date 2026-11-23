@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% from "partials/_macros.html" import icon, project_card %}
+
+{% block content %}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container">
+    <div class="hero__copy">
+      <p class="hero__kicker">Build. Learn. Grow.</p>
+      <h2 class="hero__business-title">Grow your business with our <span class="text-gradient">IT services</span></h2>
+      <h1 id="hero-title">Learn <span class="text-gradient">ML, data science and full-stack development</span> by building real projects</h1>
+      <p class="lead">Guided mentorship, not just tutorials. Build something real and understand every part of it. We also build software and AI solutions for businesses.</p>
+      <div class="hero__actions">
+        <button type="button" class="btn btn-primary btn-lg" data-open-order="">Order now</button>
+        <a class="btn btn-secondary btn-lg" href="{{ url_for('projects') }}">Browse projects</a>
+      </div>
+      <p class="hero__note">Looking for IT services for your business? <a href="{{ url_for('services') }}">See what we build</a>.</p>
+    </div>
+    <figure class="hero__media">
+      <img src="{{ url_for('static', filename='img/banner.jpg') }}" width="1600" height="609" alt="Students learning together around a laptop. Mentora Labs: Where Learning Meets Technology. Build. Learn. Grow.">
+    </figure>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="audience-title">
+  <div class="container">
+    <h2 class="sr-only" id="audience-title">Choose your path</h2>
+    <div class="audience">
+      <div class="audience__panel audience__panel--students">
+        <span class="icon-badge">{{ icon('book') }}</span>
+        <h2>For students</h2>
+        <p class="lead">Pick a project, build it with a mentor, and finish with work you can explain yourself.</p>
+        <ul class="checklist">
+          <li>{{ icon('check') }}<span>Hands-on guidance while you build</span></li>
+          <li>{{ icon('check') }}<span>Documentation, presentation and prep to explain your own work</span></li>
+          <li>{{ icon('check') }}<span>Completion certificate after project delivery and review</span></li>
+        </ul>
+        <a class="btn btn-primary" href="{{ url_for('learning') }}">Explore learning paths</a>
+      </div>
+      <div class="audience__panel">
+        <span class="icon-badge">{{ icon('briefcase') }}</span>
+        <h2>For businesses</h2>
+        <p class="lead">Professional IT services from the same team that mentors students in AI and software.</p>
+        <ul class="checklist">
+          <li>{{ icon('check') }}<span>Web and software development</span></li>
+          <li>{{ icon('check') }}<span>AI and machine learning solutions</span></li>
+          <li>{{ icon('check') }}<span>Data science and analytics</span></li>
+        </ul>
+        <a class="btn btn-secondary" href="{{ url_for('services') }}">Explore IT services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--soft" aria-labelledby="paths-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="paths-title">Three learning paths</h2>
+      <p>Choose a path, then a project within it. Not sure where to start? Message us and we'll help you pick.</p>
+    </div>
+    <div class="grid grid--3">
+      {% for g in groups %}
+      {% set items = tracks | selectattr('group', 'equalto', g.key) | list %}
+      <article class="card path">
+        <span class="icon-badge">{{ icon(g.icon) }}</span>
+        <h3>{{ g.title }}</h3>
+        <p>{{ g.desc }}</p>
+        <a class="link-arrow" href="{{ url_for('projects', path=g.key) }}">View {{ items | length }} projects {{ icon('arrow-right') }}</a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="projects-title">
+  <div class="container">
+    <div class="section-head section-head--row">
+      <div>
+        <h2 id="projects-title">Projects you can build with us</h2>
+      </div>
+      <a class="link-arrow" href="{{ url_for('projects') }}">All {{ tracks | length }} projects {{ icon('arrow-right') }}</a>
+    </div>
+    <div class="grid grid--3">
+      {% for t in tracks[:6] %}{{ project_card(t) }}{% endfor %}
+    </div>
+    <p class="prose mt-5">More projects are in the works. Message us and we'll let you know what's coming.</p>
+  </div>
+</section>
+
+<section class="section section--soft" aria-labelledby="how-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="how-title">How Mentora Labs works</h2>
+    </div>
+    {% include "partials/_steps.html" %}
+  </div>
+</section>
+
+<section class="section" aria-labelledby="services-title">
+  <div class="container">
+    <div class="section-head section-head--row">
+      <div>
+        <h2 id="services-title">IT services for businesses</h2>
+        <p>The skills we teach are the ones we build with.</p>
+      </div>
+      <a class="link-arrow" href="{{ url_for('services') }}">All IT services {{ icon('arrow-right') }}</a>
+    </div>
+    <div class="grid grid--3">
+      <div class="card path"><span class="icon-badge">{{ icon('code') }}</span><h3>Web and software development</h3><p>Custom web applications built with Flask, SQL and JavaScript.</p></div>
+      <div class="card path"><span class="icon-badge">{{ icon('cpu') }}</span><h3>AI and machine learning</h3><p>Models for classification, prediction and detection.</p></div>
+      <div class="card path"><span class="icon-badge">{{ icon('chart') }}</span><h3>Data science and analytics</h3><p>Data preparation, regression and prediction with Python and Pandas.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--soft" aria-label="Get in touch">
+  <div class="container">
+    {% with cta_title="Ready to start?", cta_text="Tell us what you want to build or learn. We reply on WhatsApp, by phone or by email.", cta_wa="Hi%20Mentora%20Labs%2C%20I%20would%20like%20to%20know%20more%20about%20your%20learning%20tracks.", cta_order="" %}
+      {% include "partials/_cta_band.html" %}
+    {% endwith %}
+  </div>
+</section>
+{% endblock %}

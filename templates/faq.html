@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Frequently Asked Questions — Mentora Labs{% endblock %}
+{% block description %}Answers about Mentora Labs, student projects, learning, IT services, project planning, pricing and getting started.{% endblock %}
+
+{% block content %}
+<section class="page-hero faq-hero">
+  <div class="container">
+    <span class="eyebrow">HELP CENTRE</span>
+    <h1>Frequently Asked Questions</h1>
+    <p class="lead">Everything you need to know about Mentora Labs, our learning programs, project guidance, development services, and how we work.</p>
+  </div>
+</section>
+
+<section class="section faq-section">
+  <div class="container">
+    <div class="faq-tools">
+      <label class="faq-search" for="faqSearch">
+        <span class="faq-search__icon" aria-hidden="true">⌕</span>
+        <input id="faqSearch" type="search" placeholder="Search questions or answers…" autocomplete="off">
+        <button type="button" id="faqClear" class="faq-clear" aria-label="Clear search" hidden>Clear</button>
+      </label>
+      <div class="faq-tool-actions">
+        <p id="faqResultCount" class="faq-result-count" aria-live="polite">Browse {{ faq_total }} answers</p>
+        <div>
+          <button type="button" class="faq-text-btn" id="faqExpand">Expand visible</button>
+          <span aria-hidden="true">·</span>
+          <button type="button" class="faq-text-btn" id="faqCollapse">Collapse all</button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="faq-categories" aria-label="FAQ categories" id="faqCategories">
+      <button type="button" class="faq-category is-active" data-category="all" aria-pressed="true">All topics</button>
+      {% for category in faq_categories %}
+      <button type="button" class="faq-category" data-category="{{ loop.index0 }}" aria-pressed="false">{{ category.name }}</button>
+      {% endfor %}
+    </nav>
+
+    <div id="faqList" class="faq-list">
+      {% for category in faq_categories %}
+      {% set category_loop = loop %}
+      <section class="faq-group" data-category-group="{{ loop.index0 }}" aria-labelledby="faq-heading-{{ loop.index }}">
+        <div class="faq-group__heading">
+          <div>
+            <span class="faq-group__number">{{ '%02d'|format(loop.index) }}</span>
+            <h2 id="faq-heading-{{ loop.index }}">{{ category.name }}</h2>
+            <p>{{ category.description }}</p>
+          </div>
+          <span class="faq-group__count">{{ category['items']|length }} questions</span>
+        </div>
+        <div class="faq-questions">
+          {% for item in category['items'] %}
+          <details class="faq-item" data-faq-item data-search="{{ (item.question ~ ' ' ~ item.answer ~ ' ' ~ category.name)|lower|e }}">
+            <summary aria-controls="faq-answer-{{ category_loop.index }}-{{ loop.index }}">
+              <span>{{ item.question }}</span>
+              <span class="faq-item__plus" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-item__answer" id="faq-answer-{{ category_loop.index }}-{{ loop.index }}">
+              <p>{{ item.answer }}</p>
+            </div>
+          </details>
+          {% endfor %}
+        </div>
+      </section>
+      {% endfor %}
+    </div>
+
+    <div class="faq-empty" id="faqEmpty" hidden>
+      <span class="faq-empty__mark" aria-hidden="true">?</span>
+      <h2>No matching questions found</h2>
+      <p>Try another keyword or choose a different topic. If you still need help, contact the Mentora Labs team.</p>
+      <button type="button" class="btn btn-secondary" id="faqEmptyClear">Clear search and filters</button>
+    </div>
+  </div>
+</section>
+
+<section class="section faq-cta-section">
+  <div class="container">
+    <div class="faq-cta">
+      <div>
+        <span class="eyebrow">LET'S TALK</span>
+        <h2>Still have questions?</h2>
+        <p>Didn't find what you were looking for? Tell us what you're planning, and we'll help you understand the next steps.</p>
+        <div class="faq-cta__contacts">
+          <a href="tel:+917449152395">+91 74491 52395</a>
+          <a href="tel:+917604894278">+91 76048 94278</a>
+          <a href="tel:+918825828406">+91 88258 28406</a>
+          <a href="https://wa.me/{{ contact.additional_whatsapp_number }}" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+      <div class="faq-cta__actions">
+        <a class="btn btn-primary btn-lg" href="{{ url_for('contact_page') }}">Contact Us</a>
+        <a class="btn btn-secondary btn-lg" href="{{ url_for('business_enquiry') }}">Discuss Your Project</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": {{ faq_schema|tojson }}
+}
+</script>
+<script src="{{ url_for('static', filename='js/faq.js') }}" defer></script>
+{% endblock %}

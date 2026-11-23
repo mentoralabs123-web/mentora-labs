@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% from "partials/_macros.html" import icon %}
+{% block title %}About Mentora Labs — Where Learning Meets Technology{% endblock %}
+{% block description %}Mentora Labs is a technology-focused learning, project development and IT services organization. Learn by building real projects with mentor guidance, or work with us on your website or application.{% endblock %}
+
+{% block content %}
+{# CONTENT-REVIEW: no company history, founders, team size, years or achievements are stated on purpose. Add them here once you have verified facts. #}
+
+{# 1 ─ About Mentora Labs #}
+<section class="page-hero" aria-labelledby="about-title">
+  <div class="container about-intro">
+    <div>
+      <h1 id="about-title">About Mentora Labs</h1>
+      <p class="lead">Mentora Labs is a technology-focused learning, project development and IT services organization. We help people learn technology by building with it, and we build websites and software for clients.</p>
+      <p class="lead">Our work rests on practical implementation, mentorship and clear understanding: you should be able to explain what was built and why.</p>
+      <div class="actions mt-5">
+        <a class="btn btn-primary" href="#what-we-do">See what we do</a>
+        <button type="button" class="btn btn-secondary" data-open-order="">Send an enquiry</button>
+      </div>
+    </div>
+    <aside class="brand-card" aria-label="Our identity">
+      <p class="brand-card__line">Where Learning Meets Technology</p>
+      <ul class="brand-card__list">
+        <li>{{ icon('code') }}<div><strong>Build</strong><span>Learn by making something real.</span></div></li>
+        <li>{{ icon('book') }}<div><strong>Learn</strong><span>Understand each part with mentor guidance.</span></div></li>
+        <li>{{ icon('rocket') }}<div><strong>Grow</strong><span>Carry the skills into your next project.</span></div></li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+{# 2 ─ Mission #}
+<section class="section" aria-labelledby="mission-title">
+  <div class="container">
+    <div class="mission">
+      <div>
+        <h2 id="mission-title">Our mission</h2>
+        <p class="mission__statement">To help learners understand technology, gain practical experience and build meaningful projects, and to help businesses use digital technology effectively.</p>
+      </div>
+      <div class="mission__points">
+        <div class="card stack">
+          <span class="icon-badge">{{ icon('target') }}</span>
+          <h3>For learners</h3>
+          <p>Understand the concepts, work on a real project and be able to explain your own work.</p>
+        </div>
+        <div class="card stack">
+          <span class="icon-badge">{{ icon('briefcase') }}</span>
+          <h3>For businesses</h3>
+          <p>Practical websites, applications and digital solutions shaped around your requirements.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# 3 ─ What we do #}
+<section class="section section--soft" id="what-we-do" aria-labelledby="what-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="what-title">What we do</h2>
+      <p>Three areas of work, each with its own page if you want more detail.</p>
+    </div>
+
+    <div class="offers">
+      <article class="offer" aria-labelledby="offer-it">
+        <div class="offer__head">
+          <span class="icon-badge">{{ icon('globe') }}</span>
+          <h3 id="offer-it">IT services and digital solutions</h3>
+          <p>Mentora Labs provides IT services to businesses, startups, organizations and individuals, based on what you need.</p>
+          <a class="link-arrow" href="{{ url_for('services') }}">View IT services {{ icon('arrow-right') }}</a>
+        </div>
+        <ul class="offer__list">
+          <li>{{ icon('check') }}<span>Website design</span></li>
+          <li>{{ icon('check') }}<span>Website development</span></li>
+          <li>{{ icon('check') }}<span>Business website creation</span></li>
+          <li>{{ icon('check') }}<span>Web application development</span></li>
+          <li>{{ icon('check') }}<span>Application development</span></li>
+          <li>{{ icon('check') }}<span>Custom software development</span></li>
+          <li>{{ icon('check') }}<span>UI/UX design</span></li>
+          <li>{{ icon('check') }}<span>Digital solutions based on client requirements</span></li>
+        </ul>
+      </article>
+
+      <article class="offer" aria-labelledby="offer-projects">
+        <div class="offer__head">
+          <span class="icon-badge">{{ icon('layers') }}</span>
+          <h3 id="offer-projects">Academic and technical projects</h3>
+          <p>We work with and support technical projects, with the focus on understanding, implementation, documentation and learning rather than just handing over files.</p>
+          <a class="link-arrow" href="{{ url_for('projects') }}">Browse projects {{ icon('arrow-right') }}</a>
+        </div>
+        <ul class="offer__list">
+          <li>{{ icon('check') }}<span>Machine Learning projects</span></li>
+          <li>{{ icon('check') }}<span>Deep Learning projects</span></li>
+          <li>{{ icon('check') }}<span>Data Science projects</span></li>
+          <li>{{ icon('check') }}<span>Artificial Intelligence projects</span></li>
+          <li>{{ icon('check') }}<span>Web applications</span></li>
+          <li>{{ icon('check') }}<span>Full-stack applications</span></li>
+          <li>{{ icon('check') }}<span>Software projects</span></li>
+        </ul>
+      </article>
+
+      <article class="offer" aria-labelledby="offer-edu">
+        <div class="offer__head">
+          <span class="icon-badge">{{ icon('book') }}</span>
+          <h3 id="offer-edu">Technical education and learning</h3>
+          <p>We offer technical learning opportunities and guidance, so you build knowledge alongside the project.</p>
+          <a class="link-arrow" href="{{ url_for('learning') }}">Explore learning {{ icon('arrow-right') }}</a>
+        </div>
+        <ul class="offer__list">
+          <li>{{ icon('check') }}<span>Machine Learning</span></li>
+          <li>{{ icon('check') }}<span>Artificial Intelligence</span></li>
+          <li>{{ icon('check') }}<span>Data Science</span></li>
+          <li>{{ icon('check') }}<span>Python</span></li>
+          <li>{{ icon('check') }}<span>Full-Stack Development</span></li>
+          <li>{{ icon('check') }}<span>Web Development</span></li>
+          <li>{{ icon('check') }}<span>Software development concepts</span></li>
+        </ul>
+      </article>
+    </div>
+
+    <p class="prose mt-6">Have a requirement that doesn't fit neatly into one list? <button type="button" class="text-btn" data-open-order="">Tell us what you need</button> and we'll discuss a solution tailored to it.</p>
+  </div>
+</section>
+
+{# 4 ─ Learning areas #}
+<section class="section" aria-labelledby="areas-title">
+  <div class="container">
+    <div class="section-head section-head--row">
+      <div>
+        <h2 id="areas-title">Learning areas and tracks</h2>
+        <p>Each learning area is built around projects you can work on with a mentor.</p>
+      </div>
+      <a class="link-arrow" href="{{ url_for('learning') }}">Full learning overview {{ icon('arrow-right') }}</a>
+    </div>
+    <div class="grid grid--3">
+      {% for g in groups %}
+      {% set items = tracks | selectattr('group', 'equalto', g.key) | list %}
+      <article class="card area">
+        <span class="icon-badge">{{ icon(g.icon) }}</span>
+        <h3>{{ g.title }}</h3>
+        <p>{{ g.desc }}</p>
+        <ul class="area__list" aria-label="Projects in {{ g.title }}">
+          {% for t in items %}<li>{{ t.title }}</li>{% endfor %}
+        </ul>
+        <a class="link-arrow" href="{{ url_for('projects', path=g.key) }}">View {{ items | length }} projects {{ icon('arrow-right') }}</a>
+      </article>
+      {% endfor %}
+    </div>
+    <p class="prose mt-5">Along the way you build skills in Python, Machine Learning, Artificial Intelligence, Data Science, web development and general software development concepts.</p>
+  </div>
+</section>
+
+{# 5 ─ Project-based learning #}
+<section class="section section--soft" aria-labelledby="method-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="method-title">Project-based learning</h2>
+      <p>We teach through a real project, in this order.</p>
+    </div>
+    <ol class="steps steps--6">
+      <li class="step"><h3>Learn the concepts</h3><p>Start with the ideas the project depends on.</p></li>
+      <li class="step"><h3>Understand the problem</h3><p>Be clear about what the project must solve and why.</p></li>
+      <li class="step"><h3>Plan the implementation</h3><p>Decide the approach, tools and structure before building.</p></li>
+      <li class="step"><h3>Develop the project</h3><p>Build it hands-on, with guidance from a mentor.</p></li>
+      <li class="step"><h3>Test and improve</h3><p>Check the results, find what falls short and refine it.</p></li>
+      <li class="step"><h3>Understand the outcome</h3><p>Be able to explain how the finished project works.</p></li>
+    </ol>
+    <p class="note mt-6">{{ icon('file') }}<span>Mentora Labs does not promise grades, job placements or any guaranteed result. The aim is that you understand and can explain what you have built.</span></p>
+  </div>
+</section>
+
+{# 6 ─ Who we serve #}
+<section class="section" aria-labelledby="serve-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="serve-title">Who we serve</h2>
+    </div>
+
+    <h3 class="group-title">Learners</h3>
+    <div class="grid grid--2">
+      <div class="card audience-card"><span class="icon-badge">{{ icon('book') }}</span><div><h4>Students</h4><p>Build practical experience alongside your studies.</p></div></div>
+      <div class="card audience-card"><span class="icon-badge">{{ icon('cpu') }}</span><div><h4>Learners interested in technology</h4><p>Start or continue learning with a real project to work on.</p></div></div>
+      <div class="card audience-card"><span class="icon-badge">{{ icon('layers') }}</span><div><h4>Final-year project students</h4><p>Develop and understand your project from idea to implementation and documentation.</p></div></div>
+      <div class="card audience-card"><span class="icon-badge">{{ icon('code') }}</span><div><h4>People developing technical skills</h4><p>Strengthen Python, data, AI and web development skills by building.</p></div></div>
+    </div>
+
+    <h3 class="group-title">Businesses</h3>
+    <div class="grid grid--3">
+      <div class="card audience-card"><span class="icon-badge">{{ icon('briefcase') }}</span><div><h4>Small businesses</h4><p>A professional website or tool for your business.</p></div></div>
+      <div class="card audience-card"><span class="icon-badge">{{ icon('rocket') }}</span><div><h4>Startups</h4><p>Web and application development for your product.</p></div></div>
+      <div class="card audience-card"><span class="icon-badge">{{ icon('globe') }}</span><div><h4>Businesses seeking digital solutions</h4><p>Custom solutions based on your requirements.</p></div></div>
+    </div>
+  </div>
+</section>
+
+{# 7 ─ CTA #}
+<section class="section section--soft" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="cta-title">Talk to Mentora Labs</h2>
+      <p>Choose the option that fits, or message us on WhatsApp and we'll point you in the right direction.</p>
+    </div>
+    <div class="audience">
+      <div class="audience__panel audience__panel--students">
+        <span class="icon-badge">{{ icon('book') }}</span>
+        <h3>For students</h3>
+        <p class="lead">Pick a learning track, or tell us about the project you want to build.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="{{ url_for('learning') }}">Explore learning tracks</a>
+          <button type="button" class="btn btn-secondary" data-open-order="">Discuss your project</button>
+        </div>
+      </div>
+      <div class="audience__panel">
+        <span class="icon-badge">{{ icon('briefcase') }}</span>
+        <h3>For businesses</h3>
+        <p class="lead">Tell us about the website or application you need.</p>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" data-open-order="IT services (business enquiry)">Discuss your website or application</button>
+          <a class="btn btn-secondary" href="https://wa.me/{{ contact.whatsapp_number }}?text=Hi%20Mentora%20Labs%2C%20I%27d%20like%20to%20discuss%20a%20website%20or%20application." target="_blank" rel="noopener">Chat on WhatsApp</a>
+        </div>
+      </div>
+    </div>
+    <p class="prose mt-5">Prefer another way? Email <a href="mailto:{{ contact.email }}">{{ contact.email }}</a> or see <a href="{{ url_for('contact_page') }}">all contact options</a>.</p>
+  </div>
+</section>
+{% endblock %}

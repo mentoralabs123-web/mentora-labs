@@ -1,0 +1,46 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div>
+        <a class="brand" href="{{ url_for('index') }}" aria-label="Mentora Labs — home">
+          <img src="{{ url_for('static', filename='img/logo-96.png') }}" width="40" height="40" alt="">
+          <span class="brand__name">Mentora Labs</span>
+        </a>
+        <p class="footer__tagline">Where learning meets technology. Build, learn, grow.</p>
+      </div>
+      <nav aria-label="Footer">
+        <h2>Explore</h2>
+        <ul>
+          <li><a href="{{ url_for('about') }}">About</a></li>
+          <li><a href="{{ url_for('services') }}">IT services</a></li>
+          <li><a href="{{ url_for('projects') }}">Projects</a></li>
+          <li><a href="{{ url_for('learning') }}">Learning</a></li>
+          <li><a href="{{ url_for('reviews') }}">Reviews</a></li>
+          <li><a href="{{ url_for('faq') }}">Frequently asked questions</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          {% for p in contact.phones %}<li><a href="tel:{{ p | replace(' ', '') }}">{{ p }}</a></li>{% endfor %}
+          <li><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></li>
+          <li><a href="{{ url_for('contact_page') }}">All contact options</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Follow</h2>
+        <ul>
+          <li><a href="{{ contact.instagram }}" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="{{ contact.facebook }}" target="_blank" rel="noopener">Facebook</a></li>
+          <li><a href="{{ contact.telegram }}" target="_blank" rel="noopener">Telegram</a></li>
+          <li><a href="{{ contact.linkedin }}" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="{{ contact.google_review }}" target="_blank" rel="noopener">Google reviews</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>Udyam-registered business | Registration No.: UDYAM-TN-19-0065658</span>
+      <span>© 2026 Mentora Labs. Built by students, for students.</span>
+    </div>
+  </div>
+</footer>

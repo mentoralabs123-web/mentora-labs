@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% from "partials/_macros.html" import icon %}
+{% block title %}IT Services — Websites, Web Apps and Custom Software | Mentora Labs{% endblock %}
+{% block description %}Mentora Labs designs and develops websites, web applications, applications and custom digital solutions around your requirements, for businesses, startups, organizations and individuals.{% endblock %}
+
+{# ---------------------------------------------------------------------
+   Task 4A: public IT Services page.
+   CONTENT-REVIEW: no client names, logos, testimonials, statistics, prices,
+   delivery times, supported platforms or technologies are stated on purpose.
+   Add them here only once they are verified.
+
+   Enquiry CTAs all go through the enquiry_cta macro below. Since Task 4B they link to the
+   business enquiry form (/services/enquiry), which stores into business_enquiries. The
+   service is preselected from ?service=<code> (service cards) or from ?cta=<key> (the
+   general CTAs); the server validates both, so a crafted link cannot pick an invalid value.
+   --------------------------------------------------------------------- #}
+{% block content %}
+{% macro enquiry_cta(label, cta, style='secondary', size='', service=None) -%}
+<a class="btn btn-{{ style }}{% if size %} btn-{{ size }}{% endif %}"
+   href="{{ url_for('business_enquiry', cta=cta, service=service) }}"
+   data-service-cta="{{ cta }}">{{ label }}</a>
+{%- endmacro %}
+
+{% set services = [
+  {
+    'id': 'website-design', 'service': 'website-design', 'icon': 'layout', 'title': 'Website design',
+    'text': 'Professional website design for businesses, startups, personal brands, organizations and portfolios. We design the look and structure of your site so it is clear to read and easy to use.',
+    'label': 'Our design approach',
+    'points': ['Clean, uncluttered interface design', 'Visual consistency across every page', 'Usability that works for your visitors', 'Responsive layouts for phone, tablet and desktop', 'Modern presentation that reflects your brand identity'],
+  },
+  {
+    'id': 'website-development', 'service': 'website-development', 'icon': 'monitor', 'title': 'Website development',
+    'text': 'We build your website from the agreed design and requirements, shaped by the functionality you need and the audience it is meant for.',
+    'label': 'Websites we can build',
+    'points': ['Business websites', 'Landing pages', 'Portfolio websites', 'Informational websites', 'Custom websites to your requirements'],
+  },
+  {
+    'id': 'web-applications', 'service': 'web-application-development', 'icon': 'grid', 'title': 'Web application development',
+    'text': 'Custom web applications for work that goes beyond a standard website, planned around how your users and your team actually work.',
+    'label': 'Examples of what this could be',
+    'points': ['Management systems', 'Dashboards', 'Booking systems', 'Portals', 'Internal business tools', 'Data-driven web applications'],
+  },
+  {
+    'id': 'application-development', 'service': 'application-development', 'icon': 'smartphone', 'title': 'Application development',
+    'text': 'Custom applications developed around your requirements. We discuss what you need first, then confirm the right approach with you before any development begins.',
+    'label': 'What shapes the solution',
+    'points': ['Your requirements', 'How the application will be used', 'The needs of its users', 'Technical feasibility'],
+  },
+  {
+    'id': 'ui-ux-design', 'service': 'ui-ux-design', 'icon': 'pen', 'title': 'UI/UX design',
+    'text': 'Interfaces should be visually clear and practical to use. We plan how people move through your product and design screens that support them.',
+    'label': 'What this includes',
+    'points': ['User interface design', 'User experience planning', 'Wireframing and layout design', 'Responsive design', 'User-flow planning, where relevant', 'Improving an existing interface'],
+  },
+  {
+    'id': 'custom-software', 'service': 'custom-software', 'icon': 'sliders', 'title': 'Custom software and digital solutions',
+    'text': 'For requirements that do not fit a ready-made product. We discuss and plan a solution around your workflow, goals and technical needs.',
+    'label': 'Examples of possible work',
+    'points': ['Custom business tools', 'Workflow solutions', 'Data management tools', 'Digital platforms', 'Business process applications'],
+  },
+] %}
+
+{% set steps = [
+  ('Requirement discussion', 'We listen to your idea and learn your goals, your users, your requirements and what you expect from the project.'),
+  ('Planning and solution design', 'We define the scope, the functionality and the approach, then propose a solution for you to review.'),
+  ('UI/UX and architecture', 'We plan the interface, the user experience, the structure of the system and the technical approach.'),
+  ('Development', 'We build the website, application or digital solution that was agreed.'),
+  ('Testing and refinement', 'We review the functionality, identify issues and refine the solution.'),
+  ('Delivery', 'We deliver the completed project according to the agreed scope.'),
+] %}
+
+{% set clients = [
+  ('briefcase', 'Small businesses', 'A website or tool for the way your business runs.'),
+  ('rocket', 'Startups', 'A product idea that needs design and development.'),
+  ('target', 'Entrepreneurs', 'An online presence or application for a new venture.'),
+  ('users', 'Organizations', 'Digital tools and information for your members or team.'),
+  ('pen', 'Personal brands', 'A site that presents you and your work clearly.'),
+  ('file', 'Professionals', 'A portfolio or practice website to represent your work.'),
+  ('user', 'Individuals', 'Any personal digital solution you need built.'),
+] %}
+
+{# 1 ─ Hero #}
+<section class="svc-hero" aria-labelledby="svc-title">
+  <div class="container svc-hero__grid">
+    <div class="svc-hero__copy">
+      <h1 id="svc-title">Digital solutions designed around your business</h1>
+      <p class="lead">Mentora Labs designs and develops websites, applications and custom digital solutions, built from your requirements and shaped with you at every step.</p>
+      <div class="hero__actions">
+        {{ enquiry_cta('Discuss your project', 'hero-discuss', 'primary', 'lg') }}
+        <a class="btn btn-secondary btn-lg" href="#services">Explore our services</a>
+      </div>
+      <ul class="chips svc-hero__chips" aria-label="Services at a glance">
+        <li class="chip">Websites</li>
+        <li class="chip">Web applications</li>
+        <li class="chip">Applications</li>
+        <li class="chip">UI/UX design</li>
+        <li class="chip">Custom software</li>
+      </ul>
+    </div>
+
+    <figure class="svc-hero__visual" role="img" aria-label="Illustration of a website layout beside an application dashboard">
+      <svg class="svc-art" viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="svcGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0868c8"/><stop offset="1" stop-color="#8f2bdc"/></linearGradient>
+        </defs>
+        <!-- website window -->
+        <g>
+          <rect class="part__win" x="10" y="14" width="360" height="270" rx="12"/>
+          <path class="part__axis" d="M10 48h360"/>
+          <circle cx="30" cy="31" r="4.5" fill="#cdd2e2"/><circle cx="46" cy="31" r="4.5" fill="#cdd2e2"/><circle cx="62" cy="31" r="4.5" fill="#cdd2e2"/>
+          <rect class="part__block" x="86" y="24" width="150" height="14" rx="7"/>
+          <rect class="part__block" x="30" y="64" width="60" height="10" rx="5"/>
+          <rect class="part__block" x="256" y="64" width="26" height="10" rx="5"/><rect class="part__block" x="290" y="64" width="26" height="10" rx="5"/><rect class="part__block part__block--solid" x="324" y="61" width="26" height="16" rx="8"/>
+          <rect x="30" y="98" width="190" height="14" rx="7" fill="#12172b" opacity=".82"/>
+          <rect x="30" y="120" width="150" height="14" rx="7" fill="#12172b" opacity=".82"/>
+          <rect class="part__block" x="30" y="148" width="210" height="8" rx="4"/>
+          <rect class="part__block" x="30" y="164" width="176" height="8" rx="4"/>
+          <rect x="30" y="186" width="84" height="26" rx="8" fill="url(#svcGrad)"/>
+          <rect class="part__block part__block--solid" x="250" y="96" width="100" height="62" rx="10"/>
+          <path class="part__trend" d="M262 146l20-18 16 10 24-26 12 12"/>
+          <rect class="part__block part__block--solid" x="30" y="226" width="96" height="44" rx="8"/>
+          <rect class="part__block part__block--solid" x="136" y="226" width="96" height="44" rx="8"/>
+        </g>
+        <!-- dashboard card -->
+        <g>
+          <rect class="part__win" x="262" y="170" width="248" height="196" rx="12" style="filter: drop-shadow(0 10px 18px rgba(18,23,43,.14));"/>
+          <rect x="280" y="190" width="70" height="10" rx="5" fill="#12172b" opacity=".82"/>
+          <rect class="part__block" x="440" y="188" width="52" height="14" rx="7"/>
+          <rect class="part__bar" x="282" y="272" width="22" height="48"/>
+          <rect class="part__bar" x="314" y="250" width="22" height="70"/>
+          <rect class="part__bar" x="346" y="262" width="22" height="58"/>
+          <rect class="part__bar" style="opacity:.7" x="378" y="232" width="22" height="88"/>
+          <rect style="fill:var(--action-purple);opacity:.55" x="410" y="244" width="22" height="76"/>
+          <path class="part__axis" d="M278 320h170"/>
+          <rect class="part__block" x="280" y="334" width="120" height="8" rx="4"/>
+          <rect class="part__block" x="280" y="348" width="84" height="8" rx="4"/>
+          <rect class="part__block part__block--solid" x="452" y="222" width="42" height="98" rx="8"/>
+          <circle class="part__node part__node--c" cx="473" cy="246" r="9"/>
+          <rect class="part__block" x="460" y="266" width="26" height="6" rx="3"/>
+          <rect class="part__block" x="460" y="280" width="26" height="6" rx="3"/>
+        </g>
+      </svg>
+    </figure>
+  </div>
+</section>
+
+{# 2 ─ Service overview #}
+<section class="section svc-overview" aria-labelledby="overview-title">
+  <div class="container svc-overview__grid">
+    <div class="section-head">
+      <h2 id="overview-title">Start with one service, or plan the whole solution</h2>
+      <p>Mentora Labs is a technology-focused learning and project organization, and we also build digital products for clients. Come to us for a single piece of work, or talk through a complete solution and we will help you plan it.</p>
+    </div>
+    <ul class="svc-ways">
+      <li class="svc-way">
+        <span class="icon-badge">{{ icon('target') }}</span>
+        <div><h3>One service</h3><p>A website design, a landing page, an interface review or one feature, on its own.</p></div>
+      </li>
+      <li class="svc-way">
+        <span class="icon-badge">{{ icon('layers') }}</span>
+        <div><h3>A complete solution</h3><p>Design, development and testing planned together around your goals.</p></div>
+      </li>
+      <li class="svc-way">
+        <span class="icon-badge">{{ icon('chat') }}</span>
+        <div><h3>Not sure yet</h3><p>Describe the problem and we will talk through what could work.</p></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+{# 3 ─ Services #}
+<section class="section section--soft" id="services" aria-labelledby="services-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="services-title">What we can build for you</h2>
+      <p>Six areas of work. Every project starts with a conversation about what you need.</p>
+    </div>
+    <div class="grid grid--2 svc-grid">
+      {% for s in services %}
+      <article class="svc-card" id="{{ s.id }}" aria-labelledby="{{ s.id }}-title">
+        <div class="svc-card__head">
+          <span class="icon-badge">{{ icon(s.icon) }}</span>
+          <h3 id="{{ s.id }}-title">{{ s.title }}</h3>
+        </div>
+        <p class="svc-card__text">{{ s.text }}</p>
+        <div class="svc-card__list">
+          <h4>{{ s.label }}</h4>
+          <ul class="area__list">
+            {% for p in s.points %}<li>{{ p }}</li>{% endfor %}
+          </ul>
+        </div>
+        <div class="svc-card__foot">
+          {{ enquiry_cta('Discuss this service', 'service-' ~ s.id, 'secondary', 'sm', s.service) }}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# 4 ─ How we work #}
+<section class="section" id="how-we-work" aria-labelledby="process-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="process-title">How we work</h2>
+      <p>A clear process from the first conversation to delivery, so you know what is happening and what comes next.</p>
+    </div>
+    <ol class="process">
+      {% for title, text in steps %}
+      <li class="process__item">
+        <span class="process__num" aria-hidden="true">{{ loop.index }}</span>
+        <h3><span class="sr-only">Step {{ loop.index }}: </span>{{ title }}</h3>
+        <p>{{ text }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+    <p class="note mt-6">{{ icon('file') }}<span>Scope, timelines, revisions and any support after delivery are discussed and agreed with you for each project before work begins.</span></p>
+  </div>
+</section>
+
+{# 5 ─ Who we work with #}
+<section class="section section--soft" aria-labelledby="clients-title">
+  <div class="container svc-clients">
+    <div class="section-head">
+      <h2 id="clients-title">Who we work with</h2>
+      <p>If you have a digital requirement and want a professional partner to design and build it, we are happy to talk, whatever the size of your organization.</p>
+    </div>
+    <ul class="svc-clients__list">
+      {% for ico, title, text in clients %}
+      <li class="svc-client">
+        <span class="icon-badge">{{ icon(ico) }}</span>
+        <div><h3>{{ title }}</h3><p>{{ text }}</p></div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+{# 6 ─ CTA #}
+<section class="section" id="start-a-project" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="svc-cta">
+      <h2 id="cta-title">Let's build something that works for your business.</h2>
+      <p>Share your idea, your website requirement, your application concept or your software need. We will review it and come back to you to discuss the next step.</p>
+      <div class="actions svc-cta__actions">
+        {{ enquiry_cta('Discuss your project', 'cta-discuss', 'primary', 'lg') }}
+        {{ enquiry_cta('Request a website', 'cta-website', 'secondary', 'lg') }}
+        {{ enquiry_cta('Build your application', 'cta-application', 'secondary', 'lg') }}
+        <a class="btn btn-secondary btn-lg" href="{{ url_for('contact_page') }}">Contact Mentora Labs</a>
+      </div>
+      <p class="svc-cta__direct">Prefer a direct message?
+        <a href="https://wa.me/{{ contact.whatsapp_number }}?text=Hi%20Mentora%20Labs%2C%20I%27d%20like%20to%20discuss%20an%20IT%20services%20requirement." target="_blank" rel="noopener">Chat on WhatsApp<span class="sr-only"> (opens in a new tab)</span></a>
+        <a href="https://wa.me/{{ contact.additional_whatsapp_number }}?text=Hi%20Mentora%20Labs%2C%20I%27d%20like%20to%20discuss%20an%20IT%20services%20requirement." target="_blank" rel="noopener">WhatsApp (+91 88258 28406)<span class="sr-only"> (opens in a new tab)</span></a>
+        or email <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>.
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

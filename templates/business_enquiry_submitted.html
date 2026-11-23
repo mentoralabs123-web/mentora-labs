@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from "partials/_macros.html" import icon %}
+{% block title %}Enquiry Submitted | Mentora Labs{% endblock %}
+{% block description %}Your business enquiry has been submitted to Mentora Labs.{% endblock %}
+
+{% block content %}
+<section class="section enq-done">
+  <div class="container">
+    <div class="card enq-done__card" role="status">
+      <span class="enq-done__icon" aria-hidden="true">{{ icon('check') }}</span>
+      <h1>Thank you{% if info.first_name %}, {{ info.first_name }}{% endif %}. Your enquiry has been submitted.</h1>
+      <p class="lead">We have received your enquiry about <strong>{{ info.service }}</strong>. We will review it and get in touch
+        {% if info.via_email and info.via_phone %}using the email address or phone number you gave us{% elif info.via_email %}at the email address you gave us{% else %}on the phone number you gave us{% endif %}
+        to discuss the next step.</p>
+      <div class="actions enq-done__actions">
+        <a class="btn btn-primary" href="{{ url_for('services') }}">Back to IT Services</a>
+        <a class="btn btn-secondary" href="{{ url_for('business_enquiry') }}">Send another enquiry</a>
+      </div>
+      <p class="enq-done__direct">Need to add something? Email <a href="mailto:{{ contact.email }}">{{ contact.email }}</a> or
+        <a href="https://wa.me/{{ contact.whatsapp_number }}" target="_blank" rel="noopener">message us on WhatsApp<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

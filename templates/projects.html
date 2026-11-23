@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% from "partials/_macros.html" import icon %}
+{% from "partials/_project_art.html" import project_art %}
+{% block title %}Projects — Mentora Labs{% endblock %}
+{% block description %}Explore Mentora Labs projects in machine learning, deep learning, data science and full-stack web development. Filter by category, search, and open any project for details.{% endblock %}
+
+{% block content %}
+{# ───────── Intro ───────── #}
+<section class="page-hero projects-hero" aria-labelledby="projects-title">
+  <div class="container projects-hero__grid">
+    <div>
+      <p class="hero__kicker">Project showcase</p>
+      <h1 id="projects-title">Projects</h1>
+      <p class="lead">Mentora Labs works on technical projects across artificial intelligence, machine learning, data science and software development. Browse what we have built, from image classifiers and prediction models to complete Flask web apps.</p>
+      <dl class="projects-hero__stats">
+        <div><dt>Projects</dt><dd>{{ showcase | length }}</dd></div>
+        <div><dt>Categories</dt><dd>{{ categories | length }}</dd></div>
+      </dl>
+    </div>
+    <ul class="focus-list" aria-label="What we work on">
+      <li>{{ icon('target') }}<span>Artificial Intelligence</span></li>
+      <li>{{ icon('cpu') }}<span>Machine Learning</span></li>
+      <li>{{ icon('chart') }}<span>Data Science</span></li>
+      <li>{{ icon('code') }}<span>Software Development</span></li>
+    </ul>
+  </div>
+</section>
+
+{# ───────── Showcase ───────── #}
+<section class="section" aria-labelledby="showcase-title" id="showcase">
+  <div class="container">
+    <h2 class="sr-only" id="showcase-title">All projects</h2>
+
+    {% if showcase %}
+    <div class="pbar">
+      <div class="psearch">
+        <label class="sr-only" for="projectSearch">Search projects by name, description or technology</label>
+        {{ icon('search') }}
+        <input type="search" id="projectSearch" placeholder="Search projects or technologies" autocomplete="off" maxlength="80">
+      </div>
+      <div class="filters" role="group" aria-label="Filter projects by category">
+        <button type="button" class="filter" data-cat="all" aria-pressed="true">All Projects <span class="filter__n">{{ showcase | length }}</span></button>
+        {% for c in categories %}
+        <button type="button" class="filter" data-cat="{{ c.key }}" aria-pressed="false">{{ c.label }} <span class="filter__n">{{ c.count }}</span></button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="pstatus">
+      <p class="filter-count" id="filterCount" role="status" aria-live="polite">Showing {{ showcase | length }} of {{ showcase | length }} projects</p>
+      <p class="path-notice" id="pathNotice" data-groups='{{ groups | tojson }}' hidden></p>
+    </div>
+
+    <div class="pgrid" id="projectGrid">
+      {% for p in showcase %}
+      <article class="pcard" id="project-{{ p.key }}" data-key="{{ p.key }}" data-group="{{ p.group }}"
+               data-cats="{{ p.categories | map(attribute='key') | join(' ') }}"
+               data-search="{{ ([p.title, p.desc, p.domain] + p.chips + (p.categories | map(attribute='label') | list)) | join(' ') | lower }}">
+        <div class="pcard__visual">
+          {% if p.image %}
+          <img src="{{ p.image }}" alt="{{ p.title }} preview" loading="lazy">
+          {% else %}
+          {{ project_art(p.kind) }}
+          {% endif %}
+          {% if p.domain %}<span class="pcard__domain">{{ p.domain }}</span>{% endif %}
+        </div>
+        <div class="pcard__body">
+          <ul class="pcard__cats" aria-label="Categories">
+            {% for c in p.categories %}<li>{{ c.label }}</li>{% endfor %}
+          </ul>
+          <h3>{{ p.title }}</h3>
+          <p>{{ p.desc }}</p>
+          <ul class="chips" aria-label="Technologies">
+            {% for c in p.chips %}<li class="chip">{{ c }}</li>{% endfor %}
+          </ul>
+        </div>
+        <div class="pcard__foot">
+          <button type="button" class="btn btn-secondary btn-sm btn-block" data-details="{{ p.key }}" aria-haspopup="dialog" aria-label="View details: {{ p.title }}">View details {{ icon('arrow-right') }}</button>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="pempty" id="projectEmpty" hidden>
+      <h3>No projects match your search</h3>
+      <p>Try a different keyword or category, or clear the filters to see every project.</p>
+      <button type="button" class="btn btn-secondary" id="clearFilters">Clear search and filters</button>
+    </div>
+    {% else %}
+    <div class="pempty">
+      {% if load_error %}
+      <h3>Projects are temporarily unavailable</h3>
+      <p>We could not load the project list right now. Please try again shortly, or contact us directly.</p>
+      {% else %}
+      <h3>No projects are published yet</h3>
+      <p>New projects will appear here soon. Message us if you have something specific in mind.</p>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{# ───────── Enquiry CTA ───────── #}
+<section class="section section--soft" aria-labelledby="pcta-title">
+  <div class="container">
+    <div class="cta-band">
+      <div>
+        <h2 id="pcta-title">Have a project in mind?</h2>
+        <p>Students, learners and businesses are welcome to get in touch. Tell us what you want to build or learn and we will discuss it with you.</p>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-primary" data-open-order="Other / not sure yet">Discuss a Project</button>
+        <a class="btn btn-secondary" href="{{ url_for('contact_page') }}">Contact Mentora Labs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ───────── Details dialog (filled by static/js/projects.js) ───────── #}
+<dialog class="dialog dialog--wide" id="projectDialog" aria-labelledby="pdTitle">
+  <div class="dialog__body pd">
+    <div class="pd__visual" id="pdVisual"></div>
+    <div class="pd__head">
+      <div>
+        <ul class="pcard__cats" id="pdCats" aria-label="Categories"></ul>
+        <h2 id="pdTitle"></h2>
+      </div>
+      <button type="button" class="icon-btn" id="pdClose" aria-label="Close project details">{{ icon('x') }}</button>
+    </div>
+    <div class="pd__content" id="pdContent"></div>
+    <div class="pd__foot">
+      <button type="button" class="btn btn-primary" id="pdEnquire">Ask about this project</button>
+      <button type="button" class="btn btn-secondary" id="pdDone">Close</button>
+    </div>
+  </div>
+</dialog>
+
+<script type="application/json" id="projectData">{{ showcase | tojson }}</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/projects.js') }}" defer></script>
+{% endblock %}
